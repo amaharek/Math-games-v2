@@ -42,13 +42,13 @@ class Game(object):
         # Count the number of problems
         self.count = 0
         # load background image
-        self.background_image = pygame.image.load("background.jpg").convert()
+        self.background_image = pygame.image.load("math-game-background.png").convert()
         # load sounds effects
         self.sound_1 = pygame.mixer.Sound("item1.ogg")
         self.sound_2 = pygame.mixer.Sound("item2.ogg")
         # load and play background music (looping infinitely)
         pygame.mixer.music.load("background-music.mp3")
-        pygame.mixer.music.set_volume(0.2)  # Set to 30% volume so it doesn't overpower sound effects
+        pygame.mixer.music.set_volume(0.1)  # Set to 10% volume so it doesn't overpower sound effects
         pygame.mixer.music.play(-1)  # -1 means loop infinitely
 
     def get_button_list(self):
