@@ -11,7 +11,7 @@ SCREEN_HEIGHT = 480
 BLACK = (0,0,0)
 WHITE = (255,255,255)
 GREEN = (0,255,0)
-RED = (255,0,0)
+RED = (232, 96, 86)
 
 class Game(object):
     def __init__(self):
@@ -32,7 +32,8 @@ class Game(object):
         # the rect green or red.
         self.reset_problem = False
         # Create menu
-        items = ("Addition","Subtraction","Multiplication","Division")
+        # items = ("Addition","Subtraction","Multiplication","Division")
+        items = ("Addition","Subtraction")
         self.menu = Menu(items,ttf_font="XpressiveBlack Regular.ttf",font_size=50)
         # True: show menu
         self.show_menu = True
@@ -45,6 +46,10 @@ class Game(object):
         # load sounds effects
         self.sound_1 = pygame.mixer.Sound("item1.ogg")
         self.sound_2 = pygame.mixer.Sound("item2.ogg")
+        # load and play background music (looping infinitely)
+        pygame.mixer.music.load("background-music.mp3")
+        pygame.mixer.music.set_volume(0.2)  # Set to 30% volume so it doesn't overpower sound effects
+        pygame.mixer.music.play(-1)  # -1 means loop infinitely
 
     def get_button_list(self):
         """ Return a list with four buttons """
@@ -62,7 +67,7 @@ class Game(object):
             btn = Button(posX,posY,width,height,self.problem["result"])
             button_list.append(btn)
         else:
-            btn = Button(posX,posY,width,height,random.randint(0,100))
+            btn = Button(posX,posY,width,height,random.randint(0,20))
             button_list.append(btn)
 
         posX = (SCREEN_WIDTH / 2) - (t_w/2) + 150
@@ -71,7 +76,7 @@ class Game(object):
             btn = Button(posX,posY,width,height,self.problem["result"])
             button_list.append(btn)
         else:
-            btn = Button(posX,posY,width,height,random.randint(0,100))
+            btn = Button(posX,posY,width,height,random.randint(0,20))
             button_list.append(btn)
 
         posX = (SCREEN_WIDTH / 2) - (t_w /2)
@@ -82,7 +87,7 @@ class Game(object):
             btn = Button(posX,posY,width,height,self.problem["result"])
             button_list.append(btn)
         else:
-            btn = Button(posX,posY,width,height,random.randint(0,100))
+            btn = Button(posX,posY,width,height,random.randint(0,20))
             button_list.append(btn)
 
         posX = (SCREEN_WIDTH / 2) - (t_w/2) + 150
@@ -91,7 +96,7 @@ class Game(object):
             btn = Button(posX,posY,width,height,self.problem["result"])
             button_list.append(btn)
         else:
-            btn = Button(posX,posY,width,height,random.randint(0,100))
+            btn = Button(posX,posY,width,height,random.randint(0,20))
             button_list.append(btn)
 
         return button_list
@@ -123,8 +128,8 @@ class Game(object):
 
     def addition(self):
         """ These will set num1,num2,result for addition """
-        a = random.randint(0,100)
-        b = random.randint(0,100)
+        a = random.randint(0,10)
+        b = random.randint(0,10)
         self.problem["num1"] = a
         self.problem["num2"] = b
         self.problem["result"] = a + b
@@ -132,8 +137,8 @@ class Game(object):
 
     def subtraction(self):
         """ These will set num1,num2,result for subtraction """
-        a = random.randint(0,100)
-        b = random.randint(0,100)
+        a = random.randint(0,10)
+        b = random.randint(0,10)
         if a > b:
             self.problem["num1"] = a
             self.problem["num2"] = b
@@ -172,9 +177,10 @@ class Game(object):
                     # set color to green when correct
                     button.set_color(GREEN)
                     # increase score
-                    self.score += 5
+                    self.score += 10
                     # Play sound effect
                     self.sound_1.play()
+                    self.sound_1.set_volume(0.5)
                 else:
                     # set color to red when incorrect
                     button.set_color(RED)
