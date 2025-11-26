@@ -2,13 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import pygame
-
-SCREEN_WIDTH = 640
-SCREEN_HEIGHT = 480
+from src.config import SCREEN_WIDTH, SCREEN_HEIGHT, FONT_SIZE_SMALL
 
 class Menu(object):
     state = -1
-    def __init__(self,items,font_color=(0,0,0),select_color=(255,0,0),ttf_font=None,font_size=25):
+    def __init__(self,items,font_color=(0,0,0),select_color=(255,0,0),ttf_font=None,font_size=FONT_SIZE_SMALL):
         self.font_color = font_color
         self.select_color = select_color
         self.items = items

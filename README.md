@@ -1,6 +1,6 @@
-# Math Game v2 🎮
+# Math Games v2 🎮
 
-A fun and educational math game built with Pygame that helps players practice basic arithmetic operations: addition, subtraction, multiplication, and division.
+A fun and educational Math Games built with Pygame that helps players practice basic arithmetic operations: addition, subtraction, multiplication, and division.
 
 ## 📋 Table of Contents
 - [About the Game](#about-the-game)
@@ -17,7 +17,7 @@ A fun and educational math game built with Pygame that helps players practice ba
 
 ## 🎯 About the Game
 
-Math Game v2 is an interactive educational game designed to help players improve their mental math skills. Players select an operation type from a menu and solve 20 problems, earning points for correct answers. The game features visual feedback, sound effects, and a scoring system to make learning math fun and engaging.
+Math Games v2 is an interactive educational game designed to help players improve their mental math skills. Players select an operation type from a menu and solve 20 problems, earning points for correct answers. The game features visual feedback, sound effects, and a scoring system to make learning math fun and engaging.
 
 **Video Demo**: https://youtu.be/R8UUBWTG0OQ
 
@@ -137,22 +137,49 @@ The game uses several external resources located in the project folder:
 
 ```
 Math-games-v2/
-│
 ├── main.py                       # Entry point - initializes Pygame and game loop
-├── game.py                       # Core game logic and Button class
-├── menu.py                       # Menu system for operation selection
 ├── requirements.txt              # Python dependencies
+├── README.md                     # This file
+├── game-instructions.md          # Game instructions
+│
+├── src/                          # Source code directory
+│   ├── __init__.py              # Package initialization
+│   ├── config.py                # Configuration and constants
+│   │
+│   ├── core/                    # Core game logic
+│   │   ├── __init__.py
+│   │   └── game.py              # Main game logic and mechanics
+│   │
+│   ├── ui/                      # User interface components
+│   │   ├── __init__.py
+│   │   ├── menu.py              # Menu system
+│   │   └── button.py            # Button component
+│   │
+│   └── assets/                  # Game assets (organized structure)
+│       ├── images/              # Image files (sprites, backgrounds)
+│       ├── sounds/              # Sound effects and music
+│       └── fonts/               # Font files
 │
 ├── kenvector_future.ttf          # Font for score display
 ├── XpressiveBlack Regular.ttf    # Font for menu items
-├── background.jpg                # Game background image
+├── math-game-background.png      # Game background image
 ├── symbols.png                   # Operation symbols sprite sheet
-├── background-music.ogg          # Background music (looping)
+├── background-music.mp3          # Background music (looping)
 ├── item1.ogg                     # Correct answer sound
 ├── item2.ogg                     # Incorrect answer sound
 │
-└── README.md                     # This file
+└── __pycache__/                  # Python cache files
 ```
+
+### New Structure Benefits
+
+The project has been reorganized for better maintainability:
+
+- **Modular Design**: Separated concerns into `core`, `ui`, and `config` modules
+- **Scalability**: Easy to add new game modes or UI components
+- **Configuration Management**: All constants centralized in `config.py`
+- **Asset Organization**: Structured assets folder for images, sounds, and fonts
+- **Python Package**: Proper `__init__.py` files for clean imports
 
 ## 🔍 How the Code Works
 
@@ -161,8 +188,15 @@ Math-games-v2/
 - Creates the game window (640x480 pixels)
 - Sets up the game loop running at 30 FPS
 - Handles the main game cycle: process events → run logic → display frame
+- Imports from `src.core.game` and `src.config`
 
-### game.py - Game Logic
+### src/config.py - Configuration
+- Centralized constants for screen dimensions, colors, and fonts
+- Asset paths and file names
+- Game mechanics settings (points, problems per game)
+- Easy to modify game parameters without touching core logic
+
+### src/core/game.py - Game Logic
 **Game Class**:
 - Manages game state and problem generation
 - Handles four operations: addition, subtraction, multiplication, division
@@ -171,13 +205,15 @@ Math-games-v2/
 - Loads and displays resources (fonts, images, sounds)
 - Provides visual feedback (green for correct, red for incorrect)
 
+### src/ui/button.py - Button Component
 **Button Class**:
 - Represents clickable answer buttons
 - Handles drawing buttons with text
 - Detects mouse clicks
 - Changes color based on answer correctness
+- Separated from game logic for reusability
 
-### menu.py - Menu System
+### src/ui/menu.py - Menu System
 **Menu Class**:
 - Creates interactive menu with operation choices
 - Highlights menu items on mouse hover (red text)

@@ -2,10 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import pygame
-from game import Game
-
-SCREEN_WIDTH = 640
-SCREEN_HEIGHT = 480
+from src.core.game import Game
+from src.config import SCREEN_WIDTH, SCREEN_HEIGHT, FPS
 
 def main():
     # Initialize all imported pygame modules
@@ -29,7 +27,7 @@ def main():
         # --- Draw the current frame
         game.display_frame(screen)
         # --- Limit to 30 frames per second
-        clock.tick(30)
+        clock.tick(FPS)
 
     # Close the window and quit.
     # If you forget this line, the program will 'hang'

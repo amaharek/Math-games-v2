@@ -1,24 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import pygame, random
-from menu import Menu
-
-SCREEN_WIDTH = 640
-SCREEN_HEIGHT = 480
-
-# Colors
-BLACK = (0,0,0)
-WHITE = (255,255,255)
-GREEN = (0,255,0)
-RED = (232, 96, 86)
+import pygame
+import random
+from src.ui.menu import Menu
+from src.ui.button import Button
+from src.config import (
+    SCREEN_WIDTH, SCREEN_HEIGHT, BLACK, WHITE, GREEN, RED,
+    FONT_SIZE_LARGE, FONT_SIZE_MEDIUM, FONT_SIZE_SCORE,
+    BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_SPACING,
+    PROBLEMS_PER_GAME, POINTS_PER_CORRECT,
+    BACKGROUND_IMAGE, SYMBOLS_IMAGE,
+    SOUND_CORRECT, SOUND_INCORRECT, BACKGROUND_MUSIC,
+    FONT_KENVECTOR, FONT_XPRESSIVE
+)
 
 class Game(object):
     def __init__(self):
         # Create a new font obeject
-        self.font = pygame.font.Font(None,65)
+        self.font = pygame.font.Font(None,FONT_SIZE_LARGE)
         # Create font for the score msg
-        self.score_font = pygame.font.Font("kenvector_future.ttf",20)
+        self.score_font = pygame.font.Font(FONT_KENVECTOR,FONT_SIZE_SCORE)
         # Create a dictionary with keys: num1, num2, result
         # These variables will be used for creating the
         # arithmetic problem
@@ -34,7 +36,7 @@ class Game(object):
         # Create menu
         # items = ("Addition","Subtraction","Multiplication","Division")
         items = ("Addition","Subtraction")
-        self.menu = Menu(items,ttf_font="XpressiveBlack Regular.ttf",font_size=50)
+        self.menu = Menu(items,ttf_font=FONT_XPRESSIVE,font_size=50)
         # True: show menu
         self.show_menu = True
         # create the score counter
@@ -42,12 +44,12 @@ class Game(object):
         # Count the number of problems
         self.count = 0
         # load background image
-        self.background_image = pygame.image.load("math-game-background.png").convert()
+        self.background_image = pygame.image.load(BACKGROUND_IMAGE).convert()
         # load sounds effects
-        self.sound_1 = pygame.mixer.Sound("item1.ogg")
-        self.sound_2 = pygame.mixer.Sound("item2.ogg")
+        self.sound_1 = pygame.mixer.Sound(SOUND_CORRECT)
+        self.sound_2 = pygame.mixer.Sound(SOUND_INCORRECT)
         # load and play background music (looping infinitely)
-        pygame.mixer.music.load("background-music.mp3")
+        pygame.mixer.music.load(BACKGROUND_MUSIC)
         pygame.mixer.music.set_volume(0.1)  # Set to 10% volume so it doesn't overpower sound effects
         pygame.mixer.music.play(-1)  # -1 means loop infinitely
 
@@ -57,10 +59,10 @@ class Game(object):
         # assign one of the buttons with the right answer
         choice = random.randint(1,4)
         # define the width and height
-        width = 100
-        height = 100
+        width = BUTTON_WIDTH
+        height = BUTTON_HEIGHT
         # t_w: total width
-        t_w = width * 2 + 50
+        t_w = width * 2 + BUTTON_SPACING
         posX = (SCREEN_WIDTH / 2) - (t_w /2)
         posY = 150
         if choice == 1:
@@ -105,7 +107,7 @@ class Game(object):
     def get_symbols(self):
         """ Return a dictionary with all the operation symbols """
         symbols = {}
-        sprite_sheet = pygame.image.load("symbols.png").convert()
+        sprite_sheet = pygame.image.load(SYMBOLS_IMAGE).convert()
         image = self.get_image(sprite_sheet,0,0,64,64)
         symbols["addition"] = image
         image = self.get_image(sprite_sheet,64,0,64,64)
@@ -177,7 +179,7 @@ class Game(object):
                     # set color to green when correct
                     button.set_color(GREEN)
                     # increase score
-                    self.score += 10
+                    self.score += POINTS_PER_CORRECT
                     # Play sound effect
                     self.sound_1.play()
                     self.sound_1.set_volume(0.5)
@@ -271,7 +273,7 @@ class Game(object):
         # --- Drawing code should go here
         if self.show_menu:
             self.menu.display_frame(screen)
-        elif self.count == 20:
+        elif self.count == PROBLEMS_PER_GAME:
             # if the count gets to 20 that means that the game is over
             # and we are going to display how many answers were correct
             # and the score
@@ -317,42 +319,3 @@ class Game(object):
         elif time_wait:
             # wait three seconds
             pygame.time.wait(3000)
-
-class Button(object):
-    def __init__(self,x,y,width,height,number):
-        self.rect = pygame.Rect(x,y,width,height)
-        self.font = pygame.font.Font(None,40)
-        self.text = self.font.render(str(number),True,BLACK)
-        self.number = number
-        self.background_color = WHITE
-
-    def draw(self,screen):
-        """ This method will draw the button to the screen """
-        # First fill the screen with the background color
-        pygame.draw.rect(screen,self.background_color,self.rect)
-        # Draw the edges of the button
-        pygame.draw.rect(screen,BLACK,self.rect,3)
-        # Get the width and height of the text surface
-        width = self.text.get_width()
-        height = self.text.get_height()
-        # Calculate the posX and posY
-        posX = self.rect.centerx - (width / 2)
-        posY = self.rect.centery - (height / 2)
-        # Draw the image into the screen
-        screen.blit(self.text,(posX,posY))
-
-    def isPressed(self):
-        """ Return true if the mouse is on the button """
-        pos = pygame.mouse.get_pos()
-        if self.rect.collidepoint(pos):
-            return True
-        else:
-            return False
-
-    def set_color(self,color):
-        """ Set the background color """
-        self.background_color = color
-
-    def get_number(self):
-        """ Return the number of the button."""
-        return self.number
